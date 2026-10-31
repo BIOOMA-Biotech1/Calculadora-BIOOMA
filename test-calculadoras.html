@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Prueba · calculadoras BIOOMA</title>
+<style>body{font:14px/1.5 system-ui,sans-serif;margin:20px}li.ok{color:#16794a}li.ko{color:#b3261e;font-weight:600}iframe{width:1200px;height:900px;border:0;position:absolute;left:-9999px}</style>
+</head>
+<body>
+<h1>Prueba de las calculadoras</h1>
+<p>Revisa invariantes que no dependen de los valores de CONFIG: diferencias, sumas, acumulados, sin NaN, límites, textos ES/EN y COP/USD. Servir por http (no file://).</p>
+<p id="sum">Corriendo…</p>
+<ol id="log"></ol>
+<script>
+const log = (ok, msg) => { const li = document.createElement('li'); li.className = ok ? 'ok' : 'ko'; li.textContent = (ok ? '✓ ' : '✗ ') + msg; document.getElementById('log').append(li); return ok; };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const load = src => new Promise(res => { const f = document.createElement('iframe'); f.src = src; f.onload = () => res(f.contentDocument); document.body.append(f); });
+const n = s => { const d = s.replace(/[^\d]/g, ''); return d ? (s.includes('−') ? -1 : 1) * +d : null; }; // table cells are whole numbers
+const DIS = {
+  es: 'Las cifras mostradas son valores representativos basados en experiencia y datos históricos. BIOOMA no garantiza estos resultados. Para una estimación personalizada, solicita una asesoría con nuestro equipo.',
+  en: 'Figures shown are representative values based on past experience and historical data. BIOOMA does not guarantee these results. For a personalized estimate, request a consultation with our team.',
+};
+function set(doc, sel, value) { const el = doc.querySelector(sel); if (el.type === 'radio' || el.type === 'checkbox') { el.checked = value; el.dispatchEvent(new Event('change', { bubbles: true })); } else { el.value = value; el.dispatchEvent(new Event(el.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true })); } }
+async function check(doc, id, name) {
+  await sleep(150);
+  const root = doc.getElementById(id), text = root.innerText, rows = [...root.querySelectorAll('[data-out=table] tr')].map(tr => [...tr.cells].map(c => c.textContent));
+  let ok = log(!/NaN|Infinity|undefined|null/.test(text), `${name}: sin NaN/Infinity/undefined en pantalla`);
+  const bad = rows.filter(r => { const [a, b, d] = r.slice(1).map(n); return a != null && Math.abs(a - b - d) > 1; });
+  ok = log(!bad.length, `${name}: Diferencia = Sin − Con en ${rows.length} filas` + (bad.length ? ` (falla: ${bad[0][0]})` : '')) && ok;
+  const ti = rows.findIndex(r => r[0].match(/^(Costo anual|Annual cost)$/));
+  if (ti > 0) {
+    const sum = c => rows.slice(0, ti).reduce((s, r) => s + n(r[c]), 0);
+    ok = log(Math.abs(sum(1) - n(rows[ti][1])) <= ti && Math.abs(sum(2) - n(rows[ti][2])) <= ti, `${name}: total anual = suma de conceptos`) && ok;
+    const cum = rows.slice(ti + 1), annual = n(rows[ti][3]);
+    ok = log(cum.every((r, i) => Math.abs(n(r[3]) - annual * (i + 1)) <= i + 2), `${name}: acumulados = años × ahorro anual`) && ok;
+    if (root.classList.contains('bc-static')) { // final numbers are shown at once only without motion
+      const hero = n(root.querySelector('[data-out=hero]').textContent);
+      ok = log(Math.abs(hero - Math.max(0, annual)) <= 1, `${name}: titular = ahorro anual de la tabla (${root.querySelector('[data-out=hero]').textContent})`) && ok;
+    }
+  }
+  return { rows, ok, root };
+}
+async function texts(doc, id, name, lang) {
+  const root = doc.getElementById(id);
+  log(root.querySelector('.bc-disclaimer').textContent === DIS[lang], `${name}: descargo exacto en ${lang.toUpperCase()}`);
+  const cta = root.querySelector('[data-out=cta]');
+  log(cta.textContent.trim() === (lang === 'es' ? 'Solicitar asesoría' : 'Request a consultation') && /^https?:/.test(cta.href), `${name}: CTA en ${lang.toUpperCase()} con enlace (${cta.href.slice(0, 40)}…)`);
+}
+(async () => {
+  // HOGAR
+  let doc = await load('calculadora-hogar.html'), H = '#biooma-calc-hogar', id = 'biooma-calc-hogar';
+  await check(doc, id, 'Hogar · valores iniciales');
+  await texts(doc, id, 'Hogar', 'es');
+  set(doc, '#bch-people', 20); set(doc, '#bch-years', 15); set(doc, '[name=bch-problems][value=often]', true); set(doc, '[name=bch-system][value=grease]', true);
+  set(doc, '#bch-cost-extraction', '999999999999');
+  await check(doc, id, 'Hogar · extremo');
+  log(/Máximo/.test(doc.querySelector('[data-hint=extraction]').textContent), 'Hogar: monto sobre el máximo se limita y avisa');
+  set(doc, '#bch-cost-extraction', '-500000');
+  await check(doc, id, 'Hogar · número negativo');
+  log(n(doc.querySelector(`${H} [data-out=table] tr`).cells[1].textContent) > 0, 'Hogar: el signo menos se ignora (no hay costos negativos)');
+  set(doc, '#bch-people', 1); set(doc, '#bch-years', 0); set(doc, '[name=bch-problems][value=never]', true);
+  set(doc, '#bch-cost-extraction', '0'); set(doc, '#bch-cost-unclog', '0');
+  const low = await check(doc, id, 'Hogar · costos en cero');
+  log(low.root.querySelector('[data-out=note]').textContent.length > 0, `Hogar: mensaje cuando no hay ahorro («${low.root.querySelector('[data-out=note]').textContent.slice(0, 40)}…»)`);
+  set(doc, '#bch-cost-extraction', ''); set(doc, '#bch-cost-unclog', ''); set(doc, '#bch-people', 4); set(doc, '[name=bch-problems][value=sometimes]', true);
+  const cop = (await check(doc, id, 'Hogar · COP')).rows;
+  set(doc, '[name=bch-cur][value=USD]', true); set(doc, '[name=bch-lang][value=en]', true);
+  const usd = (await check(doc, id, 'Hogar · USD + EN')).rows;
+  const ratio = n(cop[5][1]) / n(usd[5][1]);
+  log(ratio > 100, `Hogar: USD = COP ÷ tasa (razón ${ratio.toFixed(1)})`);
+  await texts(doc, id, 'Hogar', 'en');
+
+  // INDUSTRIAL
+  doc = await load('calculadora-industrial.html'); id = 'biooma-calc-industrial';
+  await check(doc, id, 'Industrial · valores iniciales');
+  await texts(doc, id, 'Industrial', 'es');
+  log(/tasa retributiva/i.test(doc.querySelector('[data-out=chip]').textContent), 'Industrial: el ahorro por tasa retributiva se destaca');
+  set(doc, '#bci-flow', '');
+  const empty = await check(doc, id, 'Industrial · sin caudal');
+  // with motion on, the headline is redrawn by the animation loop, which pauses while the (off-screen) test frame is out of view
+  const heroOk = !empty.root.classList.contains('bc-static') || empty.root.querySelector('[data-out=hero]').textContent === '—';
+  log(empty.rows.length === 0 && heroOk && /caudal/.test(empty.root.querySelector('[data-out=note]').textContent), 'Industrial: estado vacío sin caudal (sin tabla, mensaje' + (heroOk ? ', titular «—» si no hay movimiento)' : ')'));
+  set(doc, '#bci-flow', '9999999'); set(doc, '#bci-unknown', false); set(doc, '#bci-bod', '999999'); set(doc, '#bci-tss', ''); set(doc, '#bci-fines', '80');
+  for (const k of ['chemicals', 'energy', 'labor', 'sludge', 'thirdParty', 'trPaid']) set(doc, `#bci-${k}`, '9'.repeat(16));
+  await check(doc, id, 'Industrial · extremo');
+  log(/100\.000/.test(doc.querySelector('[data-hint=flow]').textContent), 'Industrial: caudal sobre el máximo se limita y avisa');
+  set(doc, '#bci-flow', '150'); set(doc, '#bci-unknown', true); set(doc, '#bci-fines', '');
+  for (const k of ['chemicals', 'energy', 'labor', 'sludge', 'thirdParty']) set(doc, `#bci-${k}`, '');
+  set(doc, '#bci-trPaid', '10.000.000');
+  const paid = await check(doc, id, 'Industrial · tasa pagada conocida');
+  const trRow = paid.rows.find(r => /^Tasa retributiva/.test(r[0]));
+  log(trRow && n(trRow[1]) === 10000000, `Industrial: la fila de tasa usa lo pagado (${trRow && trRow[1]})`);
+  set(doc, '[name=bci-cur][value=USD]', true); set(doc, '[name=bci-lang][value=en]', true);
+  await check(doc, id, 'Industrial · USD + EN');
+  await texts(doc, id, 'Industrial', 'en');
+
+  const ko = document.querySelectorAll('li.ko').length, all = document.querySelectorAll('li').length;
+  document.getElementById('sum').textContent = ko ? `${ko} de ${all} pruebas fallaron` : `Todo bien: ${all} pruebas pasaron`;
+  document.title = ko ? 'FALLA' : 'OK';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de ahorro · Industria · BIOOMA</title>
+<style>body{margin:0;padding:16px;background:#f2fafc}</style>
+</head>
+<body>
+<!-- ===================== BIOOMA · Calculadora INDUSTRIAL — copiar desde aquí ===================== -->
+<div id="biooma-calc-industrial" lang="es">
+<style>
+/* ==== SHARED CSS START ==== */
+#biooma-calc-industrial {
+  /* [FILL] BIOOMA palette and typography — taken from sitio-final/src/css/00-base.css; confirm against the final site */
+  --bc-navy: #2b2e82;
+  --bc-teal: #6fc0c8;
+  --bc-teal-d: #4fa9b2;
+  --bc-teal-l: #ddf1f3;
+  --bc-sky: #4d9fdd;
+  --bc-ink: #0e1230;
+  --bc-muted: #565b84;
+  --bc-ice: #f2fafc;
+  --bc-mist: #e3f3f6;
+  --bc-card: #fff;
+  --bc-font: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --bc-font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --bc-r-card: 28px;
+  --bc-r-field: 16px;
+  --bc-r-pill: 99px;
+  /* liquid: «sin BIOOMA» turbio y cálido, «con BIOOMA» limpio; el ahorro es agua clara */
+  --bc-glass: rgba(221, 241, 243, 0.55);
+  --bc-rim: rgba(43, 46, 130, 0.16);
+  --bc-saved: #a9e6ec;
+  --bc-murky-1: #7a5f2c;
+  --bc-murky-2: #66602f;
+  --bc-murky-3: #8a6a3a;
+  --bc-murky-4: #55522f;
+  --bc-murky-5: #6f5534;
+  --bc-murky-6: #5e6538;
+  --bc-murky-7: #9a6a2a;
+  --bc-murky-8: #4f4a32;
+  --bc-ease: cubic-bezier(0.45, 0, 0.55, 1);
+  display: block;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 16px 26px;
+  border-radius: var(--bc-r-card);
+  background: var(--bc-ice);
+  color: var(--bc-ink);
+  font-family: var(--bc-font);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+#biooma-calc-industrial *, #biooma-calc-industrial *::before, #biooma-calc-industrial *::after { box-sizing: border-box; }
+#biooma-calc-industrial :focus-visible { outline: 2.5px solid var(--bc-teal-d); outline-offset: 2px; }
+#biooma-calc-industrial .bc-head { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: flex-end; justify-content: space-between; margin: 0 4px 18px; }
+#biooma-calc-industrial .bc-kicker { margin: 0 0 6px; color: var(--bc-teal-d); font-size: 12.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+#biooma-calc-industrial .bc-title { margin: 0; font: 600 clamp(26px, 5vw, 38px)/1.1 var(--bc-font-display); color: var(--bc-navy); }
+#biooma-calc-industrial .bc-sub { margin: 8px 0 0; max-width: 56ch; color: var(--bc-muted); }
+#biooma-calc-industrial .bc-toggles { display: flex; gap: 10px; }
+#biooma-calc-industrial .bc-switch, #biooma-calc-industrial .bc-seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: var(--bc-r-pill); background: var(--bc-card); box-shadow: inset 0 0 0 1px var(--bc-rim); }
+#biooma-calc-industrial .bc-seg { display: flex; border-radius: var(--bc-r-field); }
+#biooma-calc-industrial .bc-switch label, #biooma-calc-industrial .bc-seg label { position: relative; flex: 1 1 auto; }
+#biooma-calc-industrial .bc-switch input, #biooma-calc-industrial .bc-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+#biooma-calc-industrial .bc-switch span, #biooma-calc-industrial .bc-seg span { display: flex; align-items: center; justify-content: center; min-height: 36px; padding: 0 14px; border-radius: var(--bc-r-pill); color: var(--bc-navy); font-size: 13.5px; font-weight: 650; text-align: center; transition: background-color 240ms var(--bc-ease), color 240ms var(--bc-ease); cursor: pointer; user-select: none; }
+#biooma-calc-industrial .bc-seg span { border-radius: 12px; min-height: 40px; }
+#biooma-calc-industrial .bc-switch input:checked + span, #biooma-calc-industrial .bc-seg input:checked + span { background: var(--bc-navy); color: #fff; }
+#biooma-calc-industrial .bc-switch input:focus-visible + span, #biooma-calc-industrial .bc-seg input:focus-visible + span { outline: 2.5px solid var(--bc-teal-d); outline-offset: 1px; }
+@media (hover: hover) and (pointer: fine) {
+  #biooma-calc-industrial .bc-switch input:not(:checked) + span:hover, #biooma-calc-industrial .bc-seg input:not(:checked) + span:hover { background: var(--bc-mist); }
+}
+#biooma-calc-industrial .bc-grid { display: grid; gap: 16px; }
+@media (min-width: 900px) { #biooma-calc-industrial .bc-grid { grid-template-columns: minmax(300px, 380px) 1fr; align-items: start; } }
+#biooma-calc-industrial .bc-card { min-width: 0; padding: 20px 18px; border-radius: var(--bc-r-card); background: var(--bc-card); box-shadow: 0 10px 40px rgba(43, 46, 130, 0.07); }
+#biooma-calc-industrial .bc-h3 { margin: 0 0 14px; color: var(--bc-navy); font-size: 17px; font-weight: 750; }
+#biooma-calc-industrial .bc-group { margin: 18px 0 8px; padding-top: 14px; border-top: 1px solid var(--bc-mist); color: var(--bc-navy); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; }
+#biooma-calc-industrial .bc-field { margin: 0 0 16px; padding: 0; border: 0; min-width: 0; }
+#biooma-calc-industrial .bc-label { display: flex; align-items: center; gap: 6px; margin: 0 0 7px; padding: 0; font-size: 14px; font-weight: 650; }
+#biooma-calc-industrial .bc-label label { cursor: pointer; }
+#biooma-calc-industrial .bc-tip { flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: var(--bc-mist); color: var(--bc-navy); font: 700 12px/1 var(--bc-font); cursor: help; }
+#biooma-calc-industrial .bc-tipbox { position: fixed; z-index: 50; max-width: min(280px, calc(100vw - 32px)); padding: 10px 12px; border-radius: 14px; background: var(--bc-ink); color: #fff; font-size: 13px; line-height: 1.4; box-shadow: 0 12px 30px rgba(14, 18, 48, 0.25); opacity: 0; pointer-events: none; transition: opacity 220ms var(--bc-ease); }
+#biooma-calc-industrial .bc-tipbox.is-on { opacity: 1; }
+#biooma-calc-industrial .bc-range { display: flex; align-items: center; gap: 12px; }
+#biooma-calc-industrial .bc-range output { min-width: 64px; padding: 6px 10px; border-radius: var(--bc-r-pill); background: var(--bc-mist); color: var(--bc-navy); font-weight: 700; font-variant-numeric: tabular-nums; text-align: center; }
+#biooma-calc-industrial input[type='range'] { --p: 50%; flex: 1; height: 28px; margin: 0; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; touch-action: pan-y; }
+#biooma-calc-industrial input[type='range']::-webkit-slider-runnable-track { height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--bc-teal) var(--p), var(--bc-mist) var(--p)); }
+#biooma-calc-industrial input[type='range']::-moz-range-track { height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--bc-teal) var(--p), var(--bc-mist) var(--p)); }
+#biooma-calc-industrial input[type='range']::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; margin-top: -8px; border: 3px solid #fff; border-radius: 50%; background: var(--bc-navy); box-shadow: 0 2px 8px rgba(43, 46, 130, 0.3); }
+#biooma-calc-industrial input[type='range']::-moz-range-thumb { width: 18px; height: 18px; border: 3px solid #fff; border-radius: 50%; background: var(--bc-navy); box-shadow: 0 2px 8px rgba(43, 46, 130, 0.3); }
+#biooma-calc-industrial .bc-input { display: flex; align-items: center; min-height: 46px; padding: 0 14px; border-radius: var(--bc-r-field); background: var(--bc-ice); box-shadow: inset 0 0 0 1px var(--bc-rim); transition: box-shadow 220ms var(--bc-ease); }
+#biooma-calc-industrial .bc-input:focus-within { box-shadow: inset 0 0 0 2px var(--bc-teal-d); }
+#biooma-calc-industrial .bc-input input, #biooma-calc-industrial .bc-input select { flex: 1; min-width: 0; height: 44px; padding: 0; border: 0; outline: 0; background: transparent; color: var(--bc-ink); font: 600 16px var(--bc-font); font-variant-numeric: tabular-nums; }
+#biooma-calc-industrial .bc-input input:disabled { color: var(--bc-muted); }
+#biooma-calc-industrial .bc-input input::placeholder { color: #8a8fb0; font-weight: 500; }
+#biooma-calc-industrial .bc-unit { color: var(--bc-muted); font-size: 13px; font-weight: 600; }
+#biooma-calc-industrial .bc-unit--pre { margin-right: 6px; }
+#biooma-calc-industrial .bc-unit--post { margin-left: 8px; }
+#biooma-calc-industrial .bc-check { display: flex; align-items: center; gap: 8px; margin: -4px 0 14px; font-size: 13.5px; cursor: pointer; }
+#biooma-calc-industrial .bc-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--bc-navy); }
+#biooma-calc-industrial .bc-hint { min-height: 0; margin: 5px 2px 0; color: var(--bc-muted); font-size: 12.5px; }
+#biooma-calc-industrial .bc-hint:empty { display: none; }
+#biooma-calc-industrial .bc-res-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+#biooma-calc-industrial .bc-replay { flex: none; display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: var(--bc-mist); color: var(--bc-navy); cursor: pointer; transition: background-color 220ms var(--bc-ease), transform 160ms var(--bc-ease); }
+#biooma-calc-industrial .bc-replay:active { transform: scale(0.94); }
+@media (hover: hover) and (pointer: fine) { #biooma-calc-industrial .bc-replay:hover { background: var(--bc-teal-l); } }
+#biooma-calc-industrial .bc-hero-label { margin: 0; color: var(--bc-muted); font-size: 14px; font-weight: 650; }
+#biooma-calc-industrial .bc-hero { margin: 2px 0 2px; color: var(--bc-navy); font-size: clamp(38px, 8.5vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+#biooma-calc-industrial .bc-hero-sub { margin: 4px 0 0; color: var(--bc-ink); font-size: 15px; font-weight: 600; }
+#biooma-calc-industrial .bc-chip { display: inline-block; margin-top: 10px; padding: 6px 12px; border-radius: var(--bc-r-pill); background: var(--bc-teal-l); color: var(--bc-navy); font-size: 13.5px; font-weight: 650; }
+#biooma-calc-industrial .bc-note { margin: 12px 0 0; padding: 10px 14px; border-radius: var(--bc-r-field); background: var(--bc-mist); color: var(--bc-navy); font-size: 13.5px; }
+#biooma-calc-industrial .bc-note:empty { display: none; }
+#biooma-calc-industrial .bc-chart { position: relative; margin-top: 22px; }
+#biooma-calc-industrial .bc-chart h4 { margin: 0 0 8px; color: var(--bc-navy); font-size: 14.5px; font-weight: 700; }
+#biooma-calc-industrial .bc-chart canvas { display: block; width: 100%; border-radius: 18px; touch-action: pan-y; cursor: crosshair; }
+#biooma-calc-industrial .bc-chart canvas:focus-visible { outline-offset: 4px; }
+#biooma-calc-industrial .bc-ttip { position: absolute; left: 0; top: 0; z-index: 5; display: grid; gap: 2px; min-width: 120px; max-width: 240px; padding: 9px 12px; border-radius: 14px; background: var(--bc-ink); color: #fff; font-size: 12.5px; line-height: 1.35; box-shadow: 0 12px 30px rgba(14, 18, 48, 0.25); opacity: 0; pointer-events: none; transition: opacity 220ms var(--bc-ease); }
+#biooma-calc-industrial .bc-ttip.is-on { opacity: 1; }
+#biooma-calc-industrial .bc-ttip b { font-size: 13px; }
+#biooma-calc-industrial .bc-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 8px 2px 0; padding: 0; list-style: none; color: var(--bc-muted); font-size: 12.5px; }
+#biooma-calc-industrial .bc-legend i { display: inline-block; width: 12px; height: 12px; margin-right: 6px; border-radius: 4px; vertical-align: -1px; }
+#biooma-calc-industrial .bc-tnote { margin: -4px 2px 8px; color: var(--bc-muted); font-size: 12px; }
+#biooma-calc-industrial .bc-tablewrap { overflow-x: auto; }
+#biooma-calc-industrial .bc-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+#biooma-calc-industrial .bc-table th, #biooma-calc-industrial .bc-table td { padding: 8px 6px; border-bottom: 1px solid var(--bc-mist); text-align: right; white-space: nowrap; }
+#biooma-calc-industrial .bc-table th:first-child, #biooma-calc-industrial .bc-table td:first-child { padding-left: 2px; text-align: left; white-space: normal; }
+#biooma-calc-industrial .bc-table thead th { color: var(--bc-muted); font-size: 12px; font-weight: 650; white-space: normal; vertical-align: bottom; }
+#biooma-calc-industrial .bc-table .is-total td { color: var(--bc-navy); font-weight: 750; }
+#biooma-calc-industrial .bc-table .is-hl td { background: var(--bc-teal-l); }
+#biooma-calc-industrial .bc-table .is-sep td { padding-top: 14px; }
+@media (max-width: 520px) { /* phones: concept on its own line, the three amounts in columns below it */
+  #biooma-calc-industrial .bc-card { padding: 18px 14px; }
+  #biooma-calc-industrial .bc-table { font-size: 12px; }
+  #biooma-calc-industrial .bc-table tr { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--bc-mist); }
+  #biooma-calc-industrial .bc-table th, #biooma-calc-industrial .bc-table td { padding: 3px 2px 7px; border: 0; }
+  #biooma-calc-industrial .bc-table td:first-child { grid-column: 1 / -1; padding: 8px 2px 0; font-weight: 600; }
+  #biooma-calc-industrial .bc-table thead th:first-child { display: none; }
+  #biooma-calc-industrial .bc-table .is-sep td:first-child { padding-top: 16px; }
+  #biooma-calc-industrial .bc-table .is-sep td:not(:first-child) { padding-top: 3px; }
+}
+#biooma-calc-industrial .bc-after { margin-top: 22px; transition: opacity 340ms var(--bc-ease), transform 340ms var(--bc-ease); }
+#biooma-calc-industrial.bc-js:not(.is-landed) .bc-after { opacity: 0; transform: translateY(10px); }
+#biooma-calc-industrial.bc-static:not(.is-landed) .bc-after { transform: none; }
+#biooma-calc-industrial .bc-disclaimer { margin: 0; color: var(--bc-muted); font-size: 12.5px; line-height: 1.5; }
+#biooma-calc-industrial .bc-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; margin-top: 14px; padding: 0 24px; border-radius: var(--bc-r-pill); background: var(--bc-navy); color: #fff; font-size: 15px; font-weight: 750; text-decoration: none; transition: background-color 220ms var(--bc-ease), transform 160ms var(--bc-ease); }
+#biooma-calc-industrial .bc-cta:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { #biooma-calc-industrial .bc-cta:hover { background: #3a3ea0; } }
+#biooma-calc-industrial .bc-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* entrada: los campos se asientan antes de que se llenen los vasos */
+#biooma-calc-industrial.bc-js .bc-inputs > * { animation: bc-in 320ms var(--bc-ease) both; animation-delay: calc(var(--i, 0) * 40ms); }
+#biooma-calc-industrial.bc-static .bc-inputs > * { animation-name: bc-fade; }
+#biooma-calc-industrial.bc-static .bc-chart canvas { animation: bc-fade 320ms var(--bc-ease) both; }
+@keyframes bc-in { from { opacity: 0; transform: translateY(8px); } }
+@keyframes bc-fade { from { opacity: 0; } }
+/* ==== SHARED CSS END ==== */
+#biooma-calc-industrial .bc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+#biooma-calc-industrial .bc-chip:empty { display: none; }
+</style>
+
+<header class="bc-head">
+  <div>
+    <p class="bc-kicker" data-i18n="kicker"></p>
+    <h2 class="bc-title" data-i18n="title"></h2>
+    <p class="bc-sub" data-i18n="sub"></p>
+  </div>
+  <div class="bc-toggles">
+    <div class="bc-switch" role="radiogroup" data-i18n-aria="lang">
+      <label><input type="radio" name="bci-lang" value="es" checked><span>ES</span></label>
+      <label><input type="radio" name="bci-lang" value="en"><span>EN</span></label>
+    </div>
+    <div class="bc-switch" role="radiogroup" data-i18n-aria="cur">
+      <label><input type="radio" name="bci-cur" value="COP" checked><span>COP</span></label>
+      <label><input type="radio" name="bci-cur" value="USD"><span>USD</span></label>
+    </div>
+  </div>
+</header>
+
+<div class="bc-grid">
+  <form class="bc-card bc-inputs" novalidate>
+    <h3 class="bc-h3" data-i18n="inputs"></h3>
+    <p class="bc-group" style="--i:1" data-i18n="g_op"></p>
+    <div class="bc-field" style="--i:2">
+      <div class="bc-label"><label for="bci-sector" data-i18n="sector"></label><button type="button" class="bc-tip" data-tip="sector_tip">i</button></div>
+      <div class="bc-input"><select id="bci-sector">
+        <option value="food" data-i18n="sec_food"></option>
+        <option value="agro" data-i18n="sec_agro"></option>
+        <option value="textile" data-i18n="sec_textile"></option>
+        <option value="hotel" data-i18n="sec_hotel"></option>
+        <option value="other" data-i18n="sec_other"></option>
+      </select></div>
+    </div>
+    <div class="bc-row" style="--i:3">
+      <div class="bc-field">
+        <div class="bc-label"><label for="bci-flow" data-i18n="flow"></label><button type="button" class="bc-tip" data-tip="flow_tip">i</button></div>
+        <div class="bc-input"><input type="text" inputmode="decimal" id="bci-flow" data-num="flow" data-max="flowM3Day" autocomplete="off"><span class="bc-unit bc-unit--post" data-i18n="u_flow"></span></div>
+        <p class="bc-hint" data-hint="flow"></p>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label"><label for="bci-days" data-i18n="days"></label><button type="button" class="bc-tip" data-tip="days_tip">i</button></div>
+        <div class="bc-input"><input type="text" inputmode="numeric" id="bci-days" data-num="days" data-max="days" autocomplete="off"><span class="bc-unit bc-unit--post" data-i18n="u_days"></span></div>
+        <p class="bc-hint" data-hint="days"></p>
+      </div>
+    </div>
+
+    <p class="bc-group" style="--i:4" data-i18n="g_load"></p>
+    <label class="bc-check" style="--i:5"><input type="checkbox" id="bci-unknown"><span data-i18n="unknown"></span></label>
+    <div class="bc-row" style="--i:6">
+      <div class="bc-field">
+        <div class="bc-label"><label for="bci-bod" data-i18n="bod"></label><button type="button" class="bc-tip" data-tip="bod_tip">i</button></div>
+        <div class="bc-input"><input type="text" inputmode="decimal" id="bci-bod" data-num="bod" data-max="mgL" autocomplete="off"><span class="bc-unit bc-unit--post">mg/L</span></div>
+        <p class="bc-hint" data-hint="bod"></p>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label"><label for="bci-tss" data-i18n="tss"></label><button type="button" class="bc-tip" data-tip="tss_tip">i</button></div>
+        <div class="bc-input"><input type="text" inputmode="decimal" id="bci-tss" data-num="tss" data-max="mgL" autocomplete="off"><span class="bc-unit bc-unit--post">mg/L</span></div>
+        <p class="bc-hint" data-hint="tss"></p>
+      </div>
+    </div>
+
+    <p class="bc-group" style="--i:7" data-i18n="g_spend"></p>
+    <div class="bc-field" style="--i:8">
+      <div class="bc-label"><label for="bci-chemicals" data-i18n="chemicals"></label><button type="button" class="bc-tip" data-tip="chemicals_tip">i</button></div>
+      <div class="bc-input"><span class="bc-unit bc-unit--pre">$</span><input type="text" inputmode="decimal" id="bci-chemicals" data-money="chemicals" autocomplete="off"><span class="bc-unit bc-unit--post" data-cur></span></div>
+      <p class="bc-hint" data-hint="chemicals"></p>
+    </div>
+    <div class="bc-field" style="--i:9">
+      <div class="bc-label"><label for="bci-energy" data-i18n="energy"></label><button type="button" class="bc-tip" data-tip="energy_tip">i</button></div>
+      <div class="bc-input"><span class="bc-unit bc-unit--pre">$</span><input type="text" inputmode="decimal" id="bci-energy" data-money="energy" autocomplete="off"><span class="bc-unit bc-unit--post" data-cur></span></div>
+      <p class="bc-hint" data-hint="energy"></p>
+    </div>
+    <div class="bc-field" style="--i:10">
+      <div class="bc-label"><label for="bci-labor" data-i18n="labor"></label><button type="button" class="bc-tip" data-tip="labor_tip">i</button></div>
+      <div class="bc-input"><span class="bc-unit bc-unit--pre">$</span><input type="text" inputmode="decimal" id="bci-labor" data-money="labor" autocomplete="off"><span class="bc-unit bc-unit--post" data-cur></span></div>
+      <p class="bc-hint" data-hint="labor"></p>
+    </div>
+    <div class="bc-field" style="--i:11">
+      <div class="bc-label"><label for="bci-sludge" data-i18n="sludge"></label><button type="button" class="bc-tip" data-tip="sludge_tip">i</button></div>
+      <div class="bc-input"><span class="bc-unit bc-unit--pre">$</span><input type="text" inputmode="decimal" id="bci-sludge" data-money="sludge" autocomplete="off"><span class="bc-unit bc-unit--post" data-cur></span></div>
+      <p class="bc-hint" data-hint="sludge"></p>
+    </div>
+    <div class="bc-field" style="--i:12">
+      <div class="bc-label"><label for="bci-thirdParty" data-i18n="thirdParty"></label><button type="button" class="bc-tip" data-tip="thirdParty_tip">i</button></div>
+      <div class="bc-input"><span class="bc-unit bc-unit--pre">$</span><input type="text" inputmode="decimal" id="bci-thirdParty" data-money="thirdParty" autocomplete="off"><span class="bc-unit bc-unit--post" data-cur></span></div>
+      <p class="bc-hint" data-hint="thirdParty"></p>
+    </div>
+
+    <p class="bc-group" style="--i:13" data-i18n="g_comp"></p>
+    <div class="bc-field" style="--i:14">
+      <div class="bc-label"><label for="bci-trPaid" data-i18n="trPaid"></label><button type="button" class="bc-tip" data-tip="trPaid_tip">i</button></div>
+      <div class="bc-input"><span class="bc-unit bc-unit--pre">$</span><input type="text" inputmode="decimal" id="bci-trPaid" data-money="trPaid" autocomplete="off"><span class="bc-unit bc-unit--post" data-cur></span></div>
+      <p class="bc-hint" data-hint="trPaid"></p>
+    </div>
+    <div class="bc-field" style="--i:15">
+      <div class="bc-label"><label for="bci-fines" data-i18n="fines"></label><button type="button" class="bc-tip" data-tip="fines_tip">i</button></div>
+      <div class="bc-input"><input type="text" inputmode="numeric" id="bci-fines" data-num="fines" data-max="fines" autocomplete="off" placeholder="0"><span class="bc-unit bc-unit--post" data-i18n="u_fines"></span></div>
+      <p class="bc-hint" data-hint="fines"></p>
+    </div>
+  </form>
+
+  <section class="bc-card bc-results" aria-labelledby="bci-hero-label">
+    <div class="bc-res-head">
+      <h3 class="bc-h3" data-i18n="nowTitle"></h3>
+      <button type="button" class="bc-replay" data-act="replay" data-i18n-aria="replay"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+    </div>
+    <div class="bc-chart" style="margin-top:6px">
+      <canvas data-chart="now" tabindex="0" role="img" style="height:340px"></canvas>
+      <div class="bc-ttip" aria-hidden="true"></div>
+    </div>
+
+    <div style="margin-top:22px">
+      <p class="bc-hero-label" id="bci-hero-label" data-i18n="headline"></p>
+      <p class="bc-hero" aria-hidden="true" data-out="hero"></p>
+      <p class="bc-hero-sub" aria-hidden="true" data-out="heroSub"></p>
+      <p class="bc-chip" data-out="chip"></p>
+    </div>
+    <p class="bc-sr" aria-live="polite" data-out="live"></p>
+    <p class="bc-note" data-out="note"></p>
+
+    <div class="bc-chart">
+      <h4 data-i18n="barsTitle"></h4>
+      <canvas data-chart="bars" tabindex="0" role="img" style="height:320px"></canvas>
+      <div class="bc-ttip" aria-hidden="true"></div>
+    </div>
+
+    <div class="bc-chart">
+      <h4 data-i18n="lineTitle"></h4>
+      <canvas data-chart="line" tabindex="0" role="img" style="height:240px"></canvas>
+      <div class="bc-ttip" aria-hidden="true"></div>
+      <ul class="bc-legend">
+        <li><i style="background:var(--bc-murky-1)"></i><span data-i18n="without"></span></li>
+        <li><i style="background:linear-gradient(var(--bc-teal),var(--bc-navy))"></i><span data-i18n="with"></span></li>
+        <li><i style="background:var(--bc-saved)"></i><span data-i18n="cumSaved"></span></li>
+      </ul>
+    </div>
+
+    <div class="bc-chart">
+      <h4 data-i18n="tableTitle"></h4>
+      <p class="bc-tnote" data-out="tableNote"></p>
+      <div class="bc-tablewrap">
+      <table class="bc-table" role="table">
+        <caption class="bc-sr" data-i18n="tableTitle"></caption>
+        <thead role="rowgroup"><tr role="row"><th role="columnheader" data-i18n="colConcept"></th><th role="columnheader" data-i18n="without"></th><th role="columnheader" data-i18n="with"></th><th role="columnheader" data-i18n="colDiff"></th></tr></thead>
+        <tbody role="rowgroup" data-out="table"></tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="bc-after">
+      <p class="bc-disclaimer" data-i18n="disclaimer"></p>
+      <a class="bc-cta" data-out="cta" target="_blank" rel="noopener"><span data-i18n="cta"></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </section>
+</div>
+<div class="bc-tipbox" role="tooltip" id="bci-tipbox"></div>
+
+<script>
+(() => {
+'use strict';
+const root = document.getElementById('biooma-calc-industrial');
+if (!root || root.dataset.ready) return;
+root.dataset.ready = '1';
+
+/* ============================== CONFIG — every editable number lives here ============================== */
+const CONFIG = {
+  lang: 'es',                 // idioma inicial: 'es' | 'en'
+  currency: 'COP',            // moneda inicial: 'COP' | 'USD'
+  copPerUsd: 4000,            // [FILL] replace with real BIOOMA data — COP por 1 USD (tasa de cambio a usar)
+  motion: 'always',           // 'always' anima siempre (decisión de Simon, como el sitio) · 'auto' respeta prefers-reduced-motion · 'never'
+  ctaUrl: 'https://wa.me/573148508368', // [FILL] contact page or WhatsApp link (hoy: WhatsApp principal, confirmar)
+  ctaText: {                  // [FILL] mensaje que llega prellenado al WhatsApp ('' = sin mensaje; no incluye los datos del cliente)
+    es: 'Hola, quiero una asesoría sobre el tratamiento de aguas residuales de mi empresa.',
+    en: "Hello, I'd like a consultation about my company's wastewater treatment.",
+  },
+  years: 5,                   // horizonte de la proyección (años)
+  defaults: { sector: 'food', flowM3Day: 150, daysPerYear: 300, unknownLoad: true }, // valores iniciales del formulario
+  limits: { flowM3Day: 100000, days: 366, mgL: 100000, fines: 50, moneyMaxCop: 1e10 }, // máximos aceptados (COP por campo)
+  sectors: {                  // [FILL] replace with real BIOOMA data — concentración típica EN EL VERTIMIENTO (mg/L), para «No lo sé»
+    food:    { bodMgL: 600, tssMgL: 300 }, // alimentos y bebidas
+    agro:    { bodMgL: 500, tssMgL: 400 }, // agroindustria
+    textile: { bodMgL: 400, tssMgL: 200 }, // textil
+    hotel:   { bodMgL: 250, tssMgL: 150 }, // hoteles y servicios
+    other:   { bodMgL: 400, tssMgL: 250 }, // otro
+  },
+  tasaRetributiva: {
+    // Monto = tarifa mínima (Tm) × factor regional (Fr) × carga contaminante vertida (kg/año), por DBO₅ y por SST.
+    // VERIFY before launch against the current Colombian regulation (Decreto 1076 de 2015, tasas retributivas por
+    // vertimientos puntuales) and the resolution of the client's environmental authority: Tm is updated every year.
+    minRateBodCopPerKg: 205.17, // [FILL] Tm DBO₅, COP/kg — valor 2024 según CORNARE RE-01482-2025, art. 5; actualizar al año vigente
+    minRateTssCopPerKg: 87.73,  // [FILL] Tm SST, COP/kg — misma fuente y año
+    regionalFactor: 1,          // [FILL] Fr: parte de 1 y la autoridad lo sube (hasta 5,5) si no se cumplen las metas de la cuenca
+    bodShareIfNoEstimate: 0.7,  // [FILL] parte de la tasa pagada atribuida a DBO₅ cuando no hay caudal para repartirla
+  },
+  opexCopPerM3: {             // [FILL] replace with real BIOOMA data — COP por m³ tratado, usado cuando el campo queda vacío
+    chemicals: 450, energy: 380, labor: 520, sludge: 300, thirdParty: 0,
+    corrective: 150,          //   mantenimiento correctivo (no se pregunta: siempre estimado)
+  },
+  finePerEventCop: 25000000,  // [FILL] costo promedio de una multa, sanción o incumplimiento (COP)
+  reduction: {                // [FILL] reducción estimada con BIOOMA (0–1)
+    bod: 0.5, tss: 0.4,       //   carga contaminante vertida
+    chemicals: 0.35, energy: 0.2, labor: 0.1, sludge: 0.4, thirdParty: 0, corrective: 0.3, fines: 0.6,
+  },
+  program: { baseAnnualCop: 6000000, perM3Cop: 120 }, // [FILL] programa BIOOMA: base por año + COP por m³ tratado
+};
+
+/* ============================== TEXT (ES / EN) ============================== */
+const TXT = {
+  es: {
+    kicker: 'Calculadora de ahorro · Industria',
+    title: 'Calcula tu ahorro potencial',
+    sub: 'Estima cuánto gasta hoy tu empresa en tratamiento de aguas residuales, tasa retributiva e incumplimientos, y cuánto podría reducir con BIOOMA.',
+    lang: 'Idioma', cur: 'Moneda', inputs: 'Datos de tu empresa',
+    g_op: 'Operación', g_load: 'Carga contaminante en tu vertimiento', g_spend: 'Gasto actual en tratamiento (por mes, opcional)', g_comp: 'Cumplimiento (opcional)',
+    sector: 'Sector o actividad', sector_tip: 'Lo usamos para estimar valores típicos cuando no tienes un dato.',
+    sec_food: 'Alimentos y bebidas', sec_agro: 'Agroindustria', sec_textile: 'Textil', sec_hotel: 'Hoteles y servicios', sec_other: 'Otro',
+    flow: 'Caudal promedio', flow_tip: 'Agua residual que tratas o viertes en un día promedio, en metros cúbicos. 1 m³ = 1.000 litros.', u_flow: 'm³/día',
+    days: 'Días de operación', days_tip: 'Días al año en que tu planta genera agua residual.', u_days: 'días/año',
+    unknown: 'No lo sé: usar valores típicos de mi sector',
+    bod: 'DBO₅', bod_tip: 'Demanda bioquímica de oxígeno del agua que sale de tu planta (vertimiento), según tu última caracterización. Mide la materia orgánica.',
+    tss: 'SST', tss_tip: 'Sólidos suspendidos totales del vertimiento, según tu última caracterización.',
+    chemicals: 'Químicos', chemicals_tip: 'Coagulantes, floculantes, cal, cloro y demás insumos del tratamiento. Si lo dejas vacío, lo estimamos con tu caudal.',
+    energy: 'Energía', energy_tip: 'Electricidad de bombas, sopladores y equipos de la planta. Si lo dejas vacío, lo estimamos con tu caudal.',
+    labor: 'Mano de obra', labor_tip: 'Personal propio que opera la planta. Si lo dejas vacío, lo estimamos con tu caudal.',
+    sludge: 'Disposición de lodos', sludge_tip: 'Transporte y disposición final de los lodos. Si lo dejas vacío, lo estimamos con tu caudal.',
+    thirdParty: 'Operación tercerizada', thirdParty_tip: 'Lo que pagas a un tercero por operar o mantener la planta. Vacío = no tercerizas.',
+    trPaid: 'Tasa retributiva pagada por año', trPaid_tip: 'Lo que pagas a la autoridad ambiental por la DBO₅ y los SST que viertes. Si la dejas vacía, la estimamos con tu caudal y tus concentraciones.',
+    fines: 'Multas o incumplimientos por año', fines_tip: 'Requerimientos, sanciones o multas en un año típico. Si no ha habido, déjalo vacío.', u_fines: 'eventos',
+    tipAria: 'Más información', replay: 'Repetir animación',
+    nowTitle: 'Lo que gastas hoy (estimado)', now_name: 'Gasto anual actual',
+    headline: 'Ahorro potencial estimado por año',
+    inYears: (n, v) => `En ${n} años: ${v}`,
+    trChip: v => `Reducción estimada en tasa retributiva: ${v} por año`,
+    barsTitle: 'Costo anual estimado', lineTitle: 'Costo acumulado estimado',
+    without: 'Sin BIOOMA', with: 'Con BIOOMA', saved: 'Ahorro', cumSaved: 'Ahorro acumulado',
+    chemicals_l: 'Químicos', energy_l: 'Energía', labor_l: 'Mano de obra', sludge_l: 'Disposición de lodos', thirdParty_l: 'Operación tercerizada',
+    corrective_l: 'Mantenimiento correctivo', tr_l: 'Tasa retributiva', fines_l: 'Multas e incumplimientos',
+    s_chemicals: 'Químicos', s_energy: 'Energía', s_labor: 'Mano de obra', s_sludge: 'Lodos', s_thirdParty: 'Tercerizada', s_corrective: 'Correctivo', s_tr: 'Tasa retributiva', s_fines: 'Multas',
+    s_ops: 'Operación', ops_l: 'Operación, lodos, mantenimiento y multas', s_trBar: 'Tasa ret.',
+    s_cost: 'Costo', cost_l: 'Costo con BIOOMA (incluye el programa)', s_trSaved: 'Tasa ret.', trSaved_l: 'Ahorro en tasa retributiva', otherSaved_l: 'Otros ahorros',
+    fee: 'Programa BIOOMA', perYear: 'por año', now: 'Hoy', yearN: n => `Año ${n}`,
+    tableTitle: 'Cifras estimadas',
+    tableNote: (c, kb, kt) => `Valores anuales en ${c}. * Estimado con tu caudal y valores de referencia. Carga anual vertida: DBO₅ ${kb} kg · SST ${kt} kg.`,
+    colConcept: 'Concepto', colDiff: 'Diferencia', annualCost: 'Costo anual', cum: n => `Acumulado ${n} ${n === 1 ? 'año' : 'años'}`,
+    max: v => `Máximo ${v}`,
+    noSaving: 'Con estos datos no estimamos un ahorro. Una asesoría puede revisar tu caso con datos reales.',
+    empty: 'Ingresa tu caudal promedio para ver la estimación.',
+    ariaNow: v => `Gasto anual actual estimado: ${v}.`,
+    ariaBars: (a, b) => `Costo anual estimado: sin BIOOMA ${a}, con BIOOMA ${b}.`,
+    ariaLine: (n, a, b) => `Costo acumulado en ${n} años: sin BIOOMA ${a}, con BIOOMA ${b}.`,
+    live: (v, n, w) => `Ahorro potencial estimado por año: ${v}. En ${n} años: ${w}.`,
+    disclaimer: 'Las cifras mostradas son valores representativos basados en experiencia y datos históricos. BIOOMA no garantiza estos resultados. Para una estimación personalizada, solicita una asesoría con nuestro equipo.',
+    cta: 'Solicitar asesoría',
+  },
+  en: {
+    kicker: 'Savings calculator · Industry',
+    title: 'Estimate your potential savings',
+    sub: 'Estimate what your company spends today on wastewater treatment, discharge fees (tasa retributiva) and non-compliance, and how much BIOOMA could reduce it.',
+    lang: 'Language', cur: 'Currency', inputs: 'Your company',
+    g_op: 'Operations', g_load: 'Pollutant load in your discharge', g_spend: 'Current treatment spending (per month, optional)', g_comp: 'Compliance (optional)',
+    sector: 'Sector / activity', sector_tip: 'Used to estimate typical values when you don’t have a figure.',
+    sec_food: 'Food and beverage', sec_agro: 'Agroindustry', sec_textile: 'Textile', sec_hotel: 'Hotels and services', sec_other: 'Other',
+    flow: 'Average flow', flow_tip: 'Wastewater you treat or discharge on an average day, in cubic meters. 1 m³ = 1,000 liters.', u_flow: 'm³/day',
+    days: 'Operating days', days_tip: 'Days per year your plant produces wastewater.', u_days: 'days/yr',
+    unknown: 'I don’t know: use typical values for my sector',
+    bod: 'BOD₅', bod_tip: 'Biochemical oxygen demand of the water leaving your plant (discharge), from your latest lab report. It measures organic matter.',
+    tss: 'TSS', tss_tip: 'Total suspended solids in your discharge, from your latest lab report.',
+    chemicals: 'Chemicals', chemicals_tip: 'Coagulants, flocculants, lime, chlorine and other treatment inputs. Leave it empty and we estimate it from your flow.',
+    energy: 'Energy', energy_tip: 'Electricity for pumps, blowers and plant equipment. Leave it empty and we estimate it from your flow.',
+    labor: 'Labor', labor_tip: 'Your own staff operating the plant. Leave it empty and we estimate it from your flow.',
+    sludge: 'Sludge disposal', sludge_tip: 'Hauling and final disposal of sludge. Leave it empty and we estimate it from your flow.',
+    thirdParty: 'Third-party operation', thirdParty_tip: 'What you pay a contractor to run or maintain the plant. Empty = not outsourced.',
+    trPaid: 'Discharge fee (tasa retributiva) paid per year', trPaid_tip: 'What you pay the environmental authority for the BOD₅ and TSS you discharge. Leave it empty and we estimate it from your flow and concentrations.',
+    fines: 'Fines or non-compliance events per year', fines_tip: 'Notices, sanctions or fines in a typical year. Leave it empty if there were none.', u_fines: 'events',
+    tipAria: 'More information', replay: 'Replay animation',
+    nowTitle: 'What you spend today (estimated)', now_name: 'Current annual spending',
+    headline: 'Estimated potential annual savings',
+    inYears: (n, v) => `Over ${n} years: ${v}`,
+    trChip: v => `Estimated reduction in discharge fee: ${v} per year`,
+    barsTitle: 'Estimated annual cost', lineTitle: 'Estimated cumulative cost',
+    without: 'Without BIOOMA', with: 'With BIOOMA', saved: 'Savings', cumSaved: 'Cumulative savings',
+    chemicals_l: 'Chemicals', energy_l: 'Energy', labor_l: 'Labor', sludge_l: 'Sludge disposal', thirdParty_l: 'Third-party operation',
+    corrective_l: 'Corrective maintenance', tr_l: 'Discharge fee (tasa retributiva)', fines_l: 'Fines and non-compliance',
+    s_chemicals: 'Chemicals', s_energy: 'Energy', s_labor: 'Labor', s_sludge: 'Sludge', s_thirdParty: 'Outsourced', s_corrective: 'Corrective', s_tr: 'Discharge fee', s_fines: 'Fines',
+    s_ops: 'Operations', ops_l: 'Operations, sludge, maintenance and fines', s_trBar: 'Fee',
+    s_cost: 'Cost', cost_l: 'Cost with BIOOMA (program included)', s_trSaved: 'Fee', trSaved_l: 'Discharge fee savings', otherSaved_l: 'Other savings',
+    fee: 'BIOOMA program', perYear: 'per year', now: 'Now', yearN: n => `Yr ${n}`,
+    tableTitle: 'Estimated figures',
+    tableNote: (c, kb, kt) => `Annual values in ${c}. * Estimated from your flow and reference values. Annual discharged load: BOD₅ ${kb} kg · TSS ${kt} kg.`,
+    colConcept: 'Item', colDiff: 'Difference', annualCost: 'Annual cost', cum: n => `Cumulative, ${n} ${n === 1 ? 'year' : 'years'}`,
+    max: v => `Maximum ${v}`,
+    noSaving: 'With these inputs we don’t estimate savings. A consultation can review your case with real data.',
+    empty: 'Enter your average flow to see the estimate.',
+    ariaNow: v => `Estimated current annual spending: ${v}.`,
+    ariaBars: (a, b) => `Estimated annual cost: without BIOOMA ${a}, with BIOOMA ${b}.`,
+    ariaLine: (n, a, b) => `Cumulative cost over ${n} years: without BIOOMA ${a}, with BIOOMA ${b}.`,
+    live: (v, n, w) => `Estimated potential annual savings: ${v}. Over ${n} years: ${w}.`,
+    disclaimer: 'Figures shown are representative values based on past experience and historical data. BIOOMA does not guarantee these results. For a personalized estimate, request a consultation with our team.',
+    cta: 'Request a consultation',
+  },
+};
+
+/* ==== ENGINE START — liquid engine (same code in both calculators) ==== */
+const TAU = Math.PI * 2;
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const rnd = (a, b) => a + Math.random() * (b - a);
+const ease = p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2); // easeInOutCubic
+const hash = i => { const s = Math.sin(i * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+const noise = x => { const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f); return (hash(i) * (1 - u) + hash(i + 1) * u) * 2 - 1; };
+const RAF = window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : null;
+const STATIC = !RAF || CONFIG.motion === 'never' ||
+  (CONFIG.motion !== 'always' && !!window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+// Eased rise to 1 + os, then a damped oscillator released from rest: 1–2 swings, each smaller and slower.
+function fillCurve(t, rise, os) {
+  if (t <= 0) return 0;
+  if (t < rise) return (1 + os) * ease(t / rise);
+  const s = t - rise, a = 3.4, w = 8.4 / (1 + 0.35 * s);
+  return 1 + os * Math.exp(-a * s) * (Math.cos(w * s) + (a / w) * Math.sin(w * s));
+}
+
+// One animated value: 'fill' / 'drain' tweens for the choreography, a spring for input changes.
+class Chan {
+  constructor(os = 0.03, z = 0.74) { this.x = 0; this.v = 0; this.to = 0; this.from = 0; this.os = os; this.z = z; this.mode = 'wait'; this.t = 0; this.rise = 1.5; this.eps = 1e-6; }
+  set(to) {
+    if (!isFinite(to) || to === this.to) return;
+    this.from = this.shown(); this.to = to; this.hit = false;
+    if (this.mode === 'idle' || (this.mode === 'fill' && this.t > 0)) this.mode = 'spring'; // blend, never restart
+  }
+  snap() { this.x = this.from = this.to; this.v = 0; this.mode = 'idle'; this.hit = true; }
+  play(delay, rise, drain) {
+    this.rise = rise; this.t = -delay; this.hit = false;
+    if (drain && this.x > this.eps) { this.mode = 'drain'; this.d0 = this.x; this.td = 0; this.dd = drain; }
+    else { this.mode = 'fill'; this.x = 0; this.v = 0; this.from = 0; }
+  }
+  step(dt) {
+    const px = this.x;
+    if (this.mode === 'drain') {
+      this.td += dt; this.x = this.d0 * (1 - ease(Math.min(1, this.td / this.dd)));
+      if (this.td >= this.dd) { this.mode = 'fill'; this.x = 0; this.from = 0; this.hit = false; }
+    } else if (this.mode === 'fill') {
+      this.t += dt;
+      if (this.t > this.rise + 1.5) { this.x = this.to; this.mode = 'idle'; }
+      else this.x = this.to * fillCurve(this.t, this.rise, this.os);
+    } else if (this.mode === 'spring') {
+      const w = TAU * 1.05, z = this.z; let n = Math.ceil(dt * 240); const h = dt / n;
+      while (n--) { this.v += (-w * w * (this.x - this.to) - 2 * z * w * this.v) * h; this.x += this.v * h; }
+      if (Math.abs(this.x - this.to) < this.eps && Math.abs(this.v) < this.eps * 4) this.snap();
+      return true;
+    } else return false;
+    this.v = dt > 0 ? (this.x - px) / dt : 0;
+    return true;
+  }
+  // number shown for this value: follows the liquid until it first reaches the target, then holds it —
+  // the liquid may overshoot and settle, the number lands once and never goes backwards
+  shown() {
+    if (this.mode === 'drain') return this.x;
+    if (!this.hit) { const d = this.to - this.from; this.hit = d > 0 ? this.x >= this.to : d < 0 ? this.x <= this.to : true; }
+    return this.hit ? this.to : this.x;
+  }
+}
+
+function pill(c, x, y, w, h) {
+  const r = Math.min(w, h) / 2;
+  c.beginPath(); c.moveTo(x + r, y);
+  c.arc(x + w - r, y + r, r, -Math.PI / 2, 0); c.lineTo(x + w, y + h - r);
+  c.arc(x + w - r, y + h - r, r, 0, Math.PI / 2); c.lineTo(x + r, y + h);
+  c.arc(x + r, y + h - r, r, Math.PI / 2, Math.PI); c.lineTo(x, y + r);
+  c.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5); c.closePath();
+}
+function band(c, x, w, bot, ys, n, f) { // liquid below the surface scaled to fraction f of its depth
+  c.beginPath(); c.moveTo(x - 2, bot + 2);
+  for (let i = 0; i <= n; i++) c.lineTo(x + (i / n) * w, bot - (bot - ys[i]) * f);
+  c.lineTo(x + w + 2, bot + 2); c.closePath();
+}
+function edge(c, x, w, bot, ys, n, f) {
+  c.beginPath();
+  for (let i = 0; i <= n; i++) { const px = x + (i / n) * w, py = bot - (bot - ys[i]) * f; i ? c.lineTo(px, py) : c.moveTo(px, py); }
+}
+const fitFont = (c, text, weight, size, maxW, font) => { let s = size; do { c.font = `${weight} ${s}px ${font}`; } while (c.measureText(text).width > maxW && --s > 9); };
+
+// A pill-shaped vessel holding stacked liquid segments (bottom → top). Segments with clear:true are saved water.
+class Vessel {
+  constructor(segs, dir, name) {
+    this.segs = segs.map(s => Object.assign({ c: new Chan() }, s));
+    this.dir = dir; this.name = name; this.k = dir > 0 ? 0.8 : 1.25; // neighbours lean opposite ways; asymmetric meniscus
+    this.ph = rnd(0, TAU); this.sp = rnd(0.82, 1.18);
+    this.tilt = 0; this.tv = 0; this.tiltTo = null; this.E = this.Ek = 0.12; this.rip = [];
+    this.H = 0; this.hv = 0; this.lag = 0; this.fresh = true; this.x = this.y = this.w = this.h = 0;
+    this.bub = []; for (let i = 3 + Math.floor(Math.random() * 4); i > 0; i--) this.bub.push(this.newBub(rnd(0, 220)));
+  }
+  newBub(y) { return { u: rnd(0.2, 0.8), y, sp: rnd(12, 30), r: rnd(1.1, 3), wf: rnd(1.3, 2.6), wp: rnd(0, TAU), wa: rnd(0.8, 2.4) }; }
+  total() { let s = 0; for (const g of this.segs) s += Math.max(0, g.c.x); return s; }
+  cost(target) { let s = 0; for (const g of this.segs) if (!g.clear) s += Math.max(0, target ? g.c.to : g.c.shown()); return s; }
+  play(delay, rise, drain, savedDelay) { for (const g of this.segs) g.c.play(g.clear ? delay + savedDelay : delay, g.clear ? 1.25 : rise, drain); }
+  kick(e, xp) { this.Ek = Math.max(this.Ek, e); if (xp != null && this.rip.length < 5) this.rip.push({ x: xp, age: 0, a: 1.6 + 2.4 * e }); }
+  step(dt, T, scale) {
+    let moving = false;
+    for (const g of this.segs) { g.c.eps = scale * 2e-5; moving = g.c.step(dt) || moving; }
+    const H = clamp(this.total() / scale, 0, 1) * this.h, hv = this.fresh || dt <= 0 ? 0 : (H - this.H) / dt; // fresh = just resized
+    if (!this.fresh) this.tv -= this.dir * 0.0032 * (hv - this.hv); // the level's acceleration sloshes the surface
+    this.fresh = false; this.H = H; this.hv = hv;
+    const idle = 0.011 * Math.sin(T * 0.41 * this.sp + this.ph) + 0.006 * Math.sin(T * 0.93 * this.sp + this.ph * 2.3);
+    const to = this.tiltTo == null ? idle : this.tiltTo, w = TAU * 1.25, z = 0.16;
+    let n = Math.ceil(dt * 240); const h = dt / n;
+    while (n--) { this.tv += (-w * w * (this.tilt - to) - 2 * z * w * this.tv) * h; this.tilt += this.tv * h; }
+    this.tilt = clamp(this.tilt, -0.18, 0.18);
+    this.Ek = 0.12 + (this.Ek - 0.12) * Math.exp(-dt / 2.4);       // energy decays slowly back to calm…
+    this.E += (this.Ek - this.E) * (1 - Math.exp(-dt / 0.09));     // …but rises fast, never as a cut
+    this.lag += (clamp(hv * 0.022, -3, 4.5) - this.lag) * (1 - Math.exp(-dt / 0.15)); // surface trails a rising level, then catches up
+    for (let i = this.rip.length - 1; i >= 0; i--) { const r = this.rip[i]; r.age += dt; if (r.a * Math.exp(-r.age / 0.85) < 0.08) this.rip.splice(i, 1); }
+    for (const b of this.bub) { b.y += b.sp * dt; if (b.y > H - 4) Object.assign(b, this.newBub(0)); }
+    return moving;
+  }
+  surf(xp, T) { // upward displacement of the surface at xp (px from the vessel's left edge)
+    const u = xp / this.w, E = this.E, m = 2.4 - this.lag;
+    let d = this.tilt * (u - 0.5) * this.w + m * (0.65 - Math.sin(Math.PI * Math.pow(u, this.k)))
+      + E * 2.4 * (0.6 * Math.sin(xp * 0.105 * this.sp + T * 2.1 * this.sp + this.ph) + 0.4 * Math.sin(xp * 0.171 - T * 1.37 * this.sp + this.ph * 1.7))
+      + E * 1.4 * noise(xp * 0.045 + T * 0.33 + this.ph);
+    for (const r of this.rip) {
+      const a = r.a * Math.exp(-r.age / 0.85), dd = Math.abs(xp - r.x) - r.age * 75, s = 9 + 16 * r.age;
+      d += a * Math.exp(-(dd * dd) / (s * s)) * Math.cos(dd * 0.3);
+    }
+    return d;
+  }
+  draw(c, T, C, o) {
+    const { x, y, w, h } = this, bot = y + h, H = this.H;
+    pill(c, x, y, w, h); c.fillStyle = C.glass; c.fill();
+    c.save(); pill(c, x, y, w, h); c.clip();
+    if (H > 0.4) {
+      const n = Math.max(12, Math.round(w / 5));
+      const ys = this.ys && this.ys.length === n + 1 ? this.ys : (this.ys = new Float32Array(n + 1));
+      const damp = STATIC ? 0 : Math.min(1, H / 16);
+      for (let i = 0; i <= n; i++) ys[i] = bot - H - this.surf((i / n) * w, T) * damp;
+      const tot = this.total(); let cum = tot, costTot = 0;
+      for (const g of this.segs) if (!g.clear) costTot += Math.max(0, g.c.x);
+      for (let k = this.segs.length - 1; k >= 0 && cum > 0; k--) { // top layer first; each lower layer paints over it
+        const g = this.segs[k];
+        band(c, x, w, bot, ys, n, cum / tot);
+        if (g.clear) { c.globalAlpha = 0.55; c.fillStyle = g.fill || C.saved; } else c.fillStyle = g.fill;
+        c.fill(); c.globalAlpha = 1;
+        cum -= Math.max(0, g.c.x);
+      }
+      const gr = c.createLinearGradient(0, bot - H, 0, bot); // depth: lighter near the surface, darker at the bottom
+      gr.addColorStop(0, 'rgba(255,255,255,0.16)'); gr.addColorStop(0.4, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.2)');
+      band(c, x, w, bot, ys, n, 1); c.fillStyle = gr; c.fill();
+      if (!STATIC) for (const b of this.bub) {
+        const a = clamp(b.y / 14, 0, 1) * clamp((H - 4 - b.y) / 16, 0, 1) * 0.8;
+        if (a < 0.02) continue;
+        c.globalAlpha = a; c.beginPath(); c.arc(x + b.u * w + Math.sin(T * b.wf + b.wp) * b.wa, bot - b.y, b.r, 0, TAU);
+        c.fillStyle = 'rgba(255,255,255,0.22)'; c.fill(); c.lineWidth = 0.8; c.strokeStyle = 'rgba(255,255,255,0.75)'; c.stroke();
+      }
+      c.globalAlpha = 1;
+      if (costTot > 0 && costTot < tot - tot * 1e-4) { edge(c, x, w, bot, ys, n, costTot / tot); c.lineWidth = 1.2; c.strokeStyle = 'rgba(255,255,255,0.7)'; c.stroke(); }
+      edge(c, x, w, bot, ys, n, 1); c.lineWidth = 4; c.strokeStyle = 'rgba(255,255,255,0.14)'; c.stroke();
+      c.lineWidth = 1.4; c.strokeStyle = 'rgba(255,255,255,0.8)'; c.stroke();
+      if (o.inside) { // labels inside each band, only where the band is tall enough to read
+        const depth = bot - ys[n >> 1]; let acc = 0;
+        c.textAlign = 'center'; c.textBaseline = 'middle';
+        for (const g of this.segs) {
+          const val = Math.max(0, g.c.x); if (val <= 0) continue;
+          const y1 = bot - depth * (acc / tot), y2 = bot - depth * ((acc + val) / tot), bh = y1 - y2; acc += val;
+          const a = clamp((bh - 20) / 12, 0, 1); if (a <= 0) continue;
+          const cy = (y1 + y2) / 2, two = bh >= 40, name = o.tr(g.short);
+          c.globalAlpha = a; c.fillStyle = g.clear ? C.ink : g.ink || '#fff';
+          c.font = `650 11px ${C.font}`;
+          if (c.measureText(name).width <= w - 10) c.fillText(name, x + w / 2, two ? cy - 8 : cy);
+          if (two) { const s = o.fmt(g.c.shown(), true); c.font = `750 12px ${C.font}`; if (c.measureText(s).width <= w - 8) c.fillText(s, x + w / 2, cy + 8); }
+        }
+        c.globalAlpha = 1;
+      }
+    }
+    const gl = c.createLinearGradient(x, 0, x + w, 0); // glass gloss
+    gl.addColorStop(0.08, 'rgba(255,255,255,0)'); gl.addColorStop(0.19, 'rgba(255,255,255,0.3)'); gl.addColorStop(0.3, 'rgba(255,255,255,0)');
+    gl.addColorStop(0.8, 'rgba(255,255,255,0)'); gl.addColorStop(0.87, 'rgba(255,255,255,0.12)'); gl.addColorStop(0.94, 'rgba(255,255,255,0)');
+    c.fillStyle = gl; c.fillRect(x, y, w, h);
+    c.restore();
+    pill(c, x + 0.5, y + 0.5, w - 1, h - 1); c.lineWidth = 1.2; c.strokeStyle = C.rim; c.stroke();
+  }
+}
+
+// Shared bits of a chart canvas: size (DPR capped at 2), tooltip, pointer and keyboard.
+class Chart {
+  constructor(cv, o) {
+    this.cv = cv; this.ctx = cv.getContext('2d'); this.o = o; this.tip = cv.parentNode.querySelector('.bc-ttip');
+    this.W = this.H = 0; this.cur = -1; this.kb = -1;
+    const at = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    cv.addEventListener('pointermove', e => { const [px, py] = at(e); this.point(px, py, e.buttons > 0); });
+    cv.addEventListener('pointerdown', e => { const [px, py] = at(e); this.point(px, py, true, true); clearTimeout(this.tt); });
+    cv.addEventListener('pointerup', e => { this.release(); if (e.pointerType !== 'mouse') this.later(); });
+    cv.addEventListener('pointercancel', () => { this.release(); this.hide(); });
+    cv.addEventListener('pointerleave', e => { this.release(); this.cur = -1; if (e.pointerType === 'mouse') this.hide(); });
+    cv.addEventListener('focus', () => this.key(0));
+    cv.addEventListener('blur', () => { this.kb = -1; this.hide(); });
+    cv.addEventListener('keydown', e => {
+      const d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+      if (d) { e.preventDefault(); this.key(d); } else if (e.key === 'Escape') this.hide(); else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.key(0, true); }
+    });
+  }
+  fit() {
+    const w = this.cv.clientWidth, h = this.cv.clientHeight, d = Math.min(2, window.devicePixelRatio || 1);
+    if (!w || !h || (w === this.W && h === this.H && this.d === d)) return;
+    this.cv.width = Math.round(w * d); this.cv.height = Math.round(h * d); this.ctx.setTransform(d, 0, 0, d, 0, 0);
+    this.W = w; this.H = h; this.d = d; this.layout();
+  }
+  show(html, px, py) {
+    this.tip.innerHTML = html;
+    const tw = this.tip.offsetWidth, th = this.tip.offsetHeight;
+    const l = clamp(px - tw / 2, 0, this.W - tw), t = py - th - 14 < 0 ? py + 18 : py - th - 14;
+    this.tip.style.transform = `translate(${l}px, ${t + this.cv.offsetTop}px)`; this.tip.classList.add('is-on');
+  }
+  hide() { this.tip.classList.remove('is-on'); }
+  later() { clearTimeout(this.tt); this.tt = setTimeout(() => this.hide(), 3200); }
+  release() {}
+}
+
+class Bars extends Chart {
+  constructor(cv, vessels, o) { super(cv, o); this.vs = vessels; this.scale = new Chan(0, 1); }
+  setScale(v) { v = Math.max(1, v); if (this.scale.mode === 'wait') { this.scale.to = v; this.scale.snap(); } else this.scale.set(v); }
+  layout() {
+    const n = this.vs.length, top = 12, h = this.H - top - 54;
+    if (this.o.side) { const v = this.vs[0]; Object.assign(v, { x: 6, y: top, w: Math.min(118, this.W * 0.3), h, fresh: true }); return; }
+    const vw = Math.min(132, this.W * 0.3), gap = Math.min(80, this.W * 0.14), x0 = (this.W - n * vw - (n - 1) * gap) / 2;
+    this.vs.forEach((v, i) => Object.assign(v, { x: x0 + i * (vw + gap), y: top, w: vw, h, fresh: true }));
+  }
+  step(dt, T) { this.scale.eps = 1e-3; let m = this.scale.step(dt); for (const v of this.vs) m = v.step(dt, T, Math.max(1, this.scale.x)) || m; return m; }
+  draw(T) {
+    const c = this.ctx, C = this.o.colors; c.clearRect(0, 0, this.W, this.H);
+    for (const v of this.vs) {
+      v.draw(c, T, C, this.o);
+      const cx = this.o.side ? v.x : v.x + v.w / 2, maxW = this.o.side ? this.W - 12 : v.w + Math.min(80, this.W * 0.14) - 8;
+      c.textAlign = this.o.side ? 'left' : 'center'; c.textBaseline = 'alphabetic'; c.fillStyle = C.muted;
+      fitFont(c, this.o.tr(v.name), 650, 12.5, maxW, C.font); c.fillText(this.o.tr(v.name), cx, v.y + v.h + 21);
+      const val = this.o.fmt(v.cost(false)); c.fillStyle = C.ink;
+      fitFont(c, val, 800, 15, maxW, C.font); c.fillText(val, cx, v.y + v.h + 41);
+    }
+    if (this.o.side) this.side(c, C);
+  }
+  side(c, C) { // labels to the right of a single stacked vessel, with leader lines
+    const v = this.vs[0], sc = Math.max(1, this.scale.x), bot = v.y + v.h, lx = v.x + v.w + 26, items = [];
+    let acc = 0, all = 0;
+    for (const g of v.segs) all += Math.max(0, g.c.to);
+    for (const g of v.segs) {
+      const val = Math.max(0, g.c.x), bh = (val / sc) * v.h;
+      if (g.c.to > 0) items.push({ g, yc: bot - ((acc + val / 2) / sc) * v.h, ly: 0, a: clamp(bh / 8, 0, 1) });
+      acc += val;
+    }
+    items.sort((p, q) => p.yc - q.yc);
+    items.forEach((it, i) => { it.ly = Math.max(it.yc, i ? items[i - 1].ly + 31 : v.y + 12); });
+    const over = items.length ? items[items.length - 1].ly - (bot - 6) : 0;
+    if (over > 0) for (const it of items) it.ly -= over;
+    for (const it of items) {
+      c.globalAlpha = it.a; c.strokeStyle = C.rim; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(v.x + v.w + 3, it.yc); c.lineTo(lx - 6, it.ly); c.stroke();
+      c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillStyle = it.g.hl ? C.navy : C.ink;
+      fitFont(c, this.o.tr(it.g.short), it.g.hl ? 750 : 600, 12, this.W - lx - 4, C.font); c.fillText(this.o.tr(it.g.short), lx, it.ly - 2);
+      const pct = all > 0 ? Math.round((it.g.c.to / all) * 100) : 0, s = `${this.o.fmt(it.g.c.shown(), true)} · ${pct} %`;
+      c.fillStyle = C.muted; fitFont(c, s, 650, 12, this.W - lx - 4, C.font); c.fillText(s, lx, it.ly + 13);
+    }
+    c.globalAlpha = 1;
+  }
+  hit(px) { return this.vs.findIndex(v => px >= v.x - 10 && px <= v.x + v.w + 10); }
+  point(px, py, drag, tap) {
+    const i = this.hit(px);
+    if (i !== this.cur || tap) { this.cur = i; if (i >= 0) this.vs[i].kick(tap ? 1 : 0.7, px - this.vs[i].x); }
+    this.vs.forEach((v, k) => { v.tiltTo = k === i ? clamp((px - v.x - v.w / 2) / (v.w / 2), -1, 1) * (drag ? 0.11 : 0.045) : null; });
+    if (i < 0) return this.hide();
+    this.show(this.tipHtml(this.vs[i], py), px, py); this.o.wake();
+  }
+  release() { for (const v of this.vs) v.tiltTo = null; }
+  key(d, tap) {
+    this.kb = this.kb < 0 ? 0 : (this.kb + d + this.vs.length) % this.vs.length;
+    const v = this.vs[this.kb]; v.kick(tap ? 1 : 0.6, v.w / 2);
+    this.show(this.tipHtml(v, v.y + v.h - v.H), v.x + v.w / 2, v.y + v.h - v.H); this.o.wake();
+  }
+  tipHtml(v, py) {
+    const sc = Math.max(1, this.scale.x), bot = v.y + v.h; let acc = 0, seg = null;
+    for (const g of v.segs) { const val = Math.max(0, g.c.to), y1 = bot - (acc / sc) * v.h, y2 = bot - ((acc + val) / sc) * v.h; if (val > 0 && py <= y1 && py >= y2) seg = g; acc += val; }
+    const tr = this.o.tr, f = this.o.fmt, total = `${tr(v.name)}: ${f(v.cost(true))} ${tr('perYear')}`;
+    return seg ? `<b>${tr(seg.long)}</b><span>${f(seg.c.to)}</span><span>${total}</span>` : `<b>${total}</b>`;
+  }
+}
+
+class Line extends Chart {
+  constructor(cv, o) { super(cv, o); this.a = new Chan(); this.b = new Chan(); this.ym = new Chan(0, 1); this.rev = new Chan(0); this.cla = new Chan(0); this.E = this.Ek = 0.12; this.rev.to = this.cla.to = 1; }
+  set(a, b) {
+    // axis top from 1, 2, 3, 4, 6, 8, 10 × 10ⁿ so its four ticks land on round values
+    const top = Math.max(a, b) * this.o.years, p = Math.pow(10, Math.floor(Math.log10(Math.max(1, top)))), m = [1, 2, 3, 4, 6, 8, 10].find(k => k * p >= top) * p;
+    for (const [ch, v] of [[this.a, a], [this.b, b], [this.ym, m]]) { if (ch.mode === 'wait') { ch.to = v; ch.snap(); } else ch.set(v); }
+  }
+  play(delay, drain) { this.rev.play(delay, 1.55, drain); this.cla.play(delay + 1.05, 0.9, drain); }
+  layout() {}
+  step(dt) {
+    for (const ch of [this.a, this.b, this.ym]) ch.eps = Math.max(1, this.ym.x) * 1e-5;
+    this.rev.eps = this.cla.eps = 1e-4;
+    let m = false; for (const ch of [this.a, this.b, this.ym, this.rev, this.cla]) m = ch.step(dt) || m;
+    this.Ek = 0.12 + (this.Ek - 0.12) * Math.exp(-dt / 2.4); this.E += (this.Ek - this.E) * (1 - Math.exp(-dt / 0.09));
+    return m;
+  }
+  geo() { const L = 62, R = 26, Tp = 14, B = 28; return { L, R, Tp, B, pw: this.W - L - R, ph: this.H - Tp - B }; }
+  draw(T) {
+    const c = this.ctx, C = this.o.colors, N = this.o.years, { L, Tp, pw, ph } = this.geo(), ym = Math.max(1, this.ym.x);
+    const X = yr => L + (yr / N) * pw, Y = v => Tp + ph - (v / ym) * ph;
+    c.clearRect(0, 0, this.W, this.H);
+    c.font = `550 11px ${C.font}`; c.textAlign = 'right'; c.textBaseline = 'middle'; c.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+      const v = (ym * i) / 4, py = Math.round(Y(v)) + 0.5;
+      c.strokeStyle = C.grid; c.beginPath(); c.moveTo(L, py); c.lineTo(L + pw, py); c.stroke();
+      c.fillStyle = C.muted; c.fillText(this.o.fmt(v, true), L - 8, py);
+    }
+    c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+    for (let yr = 0; yr <= N; yr++) c.fillText(yr ? this.o.tr('yearN')(yr) : this.o.tr('now'), X(yr), this.H - 8);
+    const rv = clamp(this.rev.x, 0, 1); if (rv <= 0) return;
+    const F = 46, xf = L + rv * (pw + F), xe = Math.min(xf, L + pw), A = this.a.x, Bv = this.b.x, E = STATIC ? 0 : this.E;
+    const n = Math.max(1, Math.ceil((xe - L) / 4)), xs = [], y1 = [], y2 = [];
+    for (let i = 0; i <= n; i++) { // the liquid trails the drawing front, so it visibly flows in from the left
+      const px = L + ((xe - L) * i) / n, yr = ((px - L) / pw) * N, q = clamp((xf - px) / F, 0, 1), mm = q * q * (3 - 2 * q);
+      const vb = Bv * yr * mm, gap = Math.max(0, A - Bv) * yr * mm, t1 = Y(vb), t2 = Y(vb + gap);
+      xs.push(px); y1.push(t1); y2.push(t2 - E * 1.6 * Math.sin(px * 0.06 + T * 1.7) * clamp((t1 - t2) / 14, 0, 1));
+    }
+    const area = (top, bottom) => { c.beginPath(); c.moveTo(xs[0], top[0]); for (let i = 1; i <= n; i++) c.lineTo(xs[i], top[i]); for (let i = n; i >= 0; i--) c.lineTo(xs[i], bottom ? bottom[i] : Tp + ph); c.closePath(); };
+    const g1 = c.createLinearGradient(0, Tp, 0, Tp + ph); g1.addColorStop(0, C.teal); g1.addColorStop(1, C.navy);
+    area(y1); c.globalAlpha = 0.85; c.fillStyle = g1; c.fill();
+    const k = clamp(this.cla.x, 0, 1), mix = C.murkyRGB.map((m, i) => Math.round(m + (C.savedRGB[i] - m) * k)); // murky water clears into savings
+    area(y2, y1); c.globalAlpha = 0.9; c.fillStyle = `rgb(${mix})`; c.fill();
+    if (!STATIC && k > 0) { // slow sheen across the saved water
+      c.save(); area(y2, y1); c.clip();
+      const sx = L + (((T * 0.06) % 1.4) - 0.2) * pw, gs = c.createLinearGradient(sx - 60, 0, sx + 60, 0);
+      gs.addColorStop(0, 'rgba(255,255,255,0)'); gs.addColorStop(0.5, `rgba(255,255,255,${0.22 * k})`); gs.addColorStop(1, 'rgba(255,255,255,0)');
+      c.globalAlpha = 1; c.fillStyle = gs; c.fillRect(L, Tp, pw, ph); c.restore();
+    }
+    c.globalAlpha = 1;
+    c.save(); c.beginPath(); c.rect(L - 6, 0, xf - L + 6, this.H); c.clip();
+    for (const [v, col] of [[A, C.murky], [Bv, C.navy]]) {
+      c.beginPath(); c.moveTo(X(0), Y(0)); c.lineTo(X(N), Y(v * N)); c.lineWidth = 2.5; c.strokeStyle = col; c.stroke();
+      for (let yr = 1; yr <= N; yr++) { c.beginPath(); c.arc(X(yr), Y(v * yr), this.cur === yr ? 5 : 3.2, 0, TAU); c.fillStyle = '#fff'; c.fill(); c.lineWidth = 2; c.stroke(); }
+    }
+    c.restore();
+    const ly = Math.max(0.5, N - 1.5), th = Y(Bv * ly) - Y(A * ly); // between two year markers, not on one
+    const lab = this.o.tr('cumSaved'), room = pw / N - 10;
+    fitFont(c, lab, 700, 11.5, room, C.font);
+    if (k > 0.3 && th >= 22 && xf > X(ly) + 40 && c.measureText(lab).width <= room) { // too narrow: the legend names it
+      c.globalAlpha = clamp((k - 0.3) / 0.4, 0, 1); c.fillStyle = C.ink; c.textAlign = 'center'; c.textBaseline = 'middle';
+      c.fillText(lab, X(ly), (Y(Bv * ly) + Y(A * ly)) / 2); c.globalAlpha = 1;
+    }
+    if (this.cur > 0) { c.strokeStyle = C.rim; c.lineWidth = 1; c.beginPath(); c.moveTo(X(this.cur) + 0.5, Tp); c.lineTo(X(this.cur) + 0.5, Tp + ph); c.stroke(); }
+  }
+  point(px, py, drag, tap) {
+    const { L, pw } = this.geo(), yr = Math.round(clamp((px - L) / pw, 0, 1) * this.o.years);
+    if (yr !== this.cur || tap) { this.cur = yr; this.Ek = Math.max(this.Ek, tap ? 1 : 0.7); }
+    if (yr < 1) return this.hide();
+    this.tipAt(yr, px, py);
+  }
+  tipAt(yr, px, py) {
+    const tr = this.o.tr, f = this.o.fmt, a = this.a.to * yr, b = this.b.to * yr;
+    this.show(`<b>${tr('cum')(yr)}</b><span>${tr('without')}: ${f(a)}</span><span>${tr('with')}: ${f(b)}</span><span>${tr('saved')}: ${f(Math.max(0, a - b))}</span>`, px, py);
+    this.o.wake();
+  }
+  key(d, tap) {
+    const N = this.o.years; this.kb = this.kb < 1 ? N : ((this.kb - 1 + d + N) % N) + 1; this.cur = this.kb; this.Ek = Math.max(this.Ek, tap ? 1 : 0.6);
+    const { L, Tp, pw, ph } = this.geo(); this.tipAt(this.kb, L + (this.kb / N) * pw, Tp + ph / 2);
+  }
+  hide() { this.cur = -1; super.hide(); }
+}
+
+// One requestAnimationFrame loop for every chart; paused off-screen and in hidden tabs.
+function makeLoop(charts, onFrame) {
+  let on = false, last = 0, T = 0, inView = true;
+  const tick = now => {
+    if (!inView || document.hidden) { on = false; return; }
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1000)); last = now; T += dt; // delta time; long gaps are clamped
+    for (const ch of charts) { ch.fit(); ch.step(dt, T); ch.draw(T); }
+    onFrame();
+    RAF(tick);
+  };
+  const wake = () => { if (on || STATIC || !inView || document.hidden) return; on = true; last = performance.now(); RAF(tick); };
+  const drawStatic = () => { for (const ch of charts) { ch.fit(); ch.step(0, T); ch.draw(T); } onFrame(); };
+  if (window.IntersectionObserver) new IntersectionObserver(es => { inView = es[0].isIntersecting; wake(); }).observe(root);
+  document.addEventListener('visibilitychange', wake);
+  return { wake, drawStatic };
+}
+const cssVar = n => getComputedStyle(root).getPropertyValue(n).trim();
+const rgb = hex => { const m = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex) || [0, '80', '80', '80']; return [1, 2, 3].map(i => parseInt(m[i], 16)); };
+function colors() {
+  const C = { font: getComputedStyle(root).fontFamily, ink: cssVar('--bc-ink'), muted: cssVar('--bc-muted'), navy: cssVar('--bc-navy'), teal: cssVar('--bc-teal'), sky: cssVar('--bc-sky'), glass: cssVar('--bc-glass'), rim: cssVar('--bc-rim'), saved: cssVar('--bc-saved'), murky: cssVar('--bc-murky-1'), grid: 'rgba(43,46,130,0.08)' };
+  C.murkyRGB = rgb(C.murky); C.savedRGB = rgb(C.saved);
+  return C;
+}
+/* ==== ENGINE END ==== */
+
+/* ============================== Calculation (runs immediately, never waits on animation) ============================== */
+const OPS = ['chemicals', 'energy', 'labor', 'sludge', 'thirdParty'];
+const CATS = [...OPS, 'corrective', 'tr', 'fines'];
+const fin = v => (isFinite(v) && v > 0 ? v : 0);
+function compute(s) {
+  const sec = CONFIG.sectors[s.sector], TR = CONFIG.tasaRetributiva, r = CONFIG.reduction;
+  const flow = fin(s.flow), days = s.days ?? CONFIG.defaults.daysPerYear, m3 = flow * days;
+  const bod = s.unknown || s.bod == null ? sec.bodMgL : s.bod, tss = s.unknown || s.tss == null ? sec.tssMgL : s.tss;
+  const kgBod = (flow * bod * days) / 1000, kgTss = (flow * tss * days) / 1000; // m³/día × mg/L (= g/m³) × días → g → kg
+  const estBod = TR.minRateBodCopPerKg * TR.regionalFactor * kgBod, estTss = TR.minRateTssCopPerKg * TR.regionalFactor * kgTss;
+  let trBod = estBod, trTss = estTss;
+  if (s.trPaid != null) { // a known payment is split between BOD₅ and TSS in the same proportion as the estimate
+    const share = estBod + estTss > 0 ? estBod / (estBod + estTss) : TR.bodShareIfNoEstimate;
+    trBod = s.trPaid * share; trTss = s.trPaid - trBod;
+  }
+  const cat = (k, now, red, est) => ({ k, now: fin(now), with: fin(now * (1 - red)), est });
+  const cats = OPS.map(k => cat(k, s[k] != null ? s[k] * 12 : CONFIG.opexCopPerM3[k] * m3, r[k], s[k] == null && CONFIG.opexCopPerM3[k] > 0));
+  cats.push(cat('corrective', CONFIG.opexCopPerM3.corrective * m3, r.corrective, true));
+  cats.push({ k: 'tr', now: fin(trBod + trTss), with: fin(trBod * (1 - r.bod) + trTss * (1 - r.tss)), est: s.trPaid == null });
+  cats.push(cat('fines', (s.fines || 0) * CONFIG.finePerEventCop, r.fines, false));
+  const empty = flow <= 0;
+  const fee = empty ? 0 : fin(CONFIG.program.baseAnnualCop + CONFIG.program.perM3Cop * m3);
+  const without = cats.reduce((a, c) => a + c.now, 0), withB = cats.reduce((a, c) => a + c.with, 0) + fee;
+  const trCat = cats[CATS.indexOf('tr')];
+  return { cats, fee, without, with: withB, savings: without - withB, trSav: trCat.now - trCat.with, trEst: estBod + estTss, kgBod, kgTss, m3, empty };
+}
+
+/* ============================== UI ============================== */
+const D = CONFIG.defaults;
+const S = { lang: CONFIG.lang, cur: CONFIG.currency, sector: D.sector, flow: D.flowM3Day, days: D.daysPerYear, unknown: D.unknownLoad, bod: null, tss: null,
+  chemicals: null, energy: null, labor: null, sludge: null, thirdParty: null, trPaid: null, fines: null };
+const $ = s => root.querySelector(s), $$ = s => Array.from(root.querySelectorAll(s));
+const tr = k => TXT[S.lang][k] ?? k;
+const nfs = {};
+function num(v, compact, dec) {
+  const key = S.lang + (compact ? 'c' : '') + (dec ? 'd' : '');
+  if (!nfs[key]) {
+    const loc = S.lang === 'es' ? 'es-CO' : 'en-US';
+    try { nfs[key] = new Intl.NumberFormat(loc, compact ? { notation: 'compact', maximumFractionDigits: 1 } : { maximumFractionDigits: dec ? 2 : 0 }); }
+    catch (e) { nfs[key] = new Intl.NumberFormat(loc, { maximumFractionDigits: 0 }); }
+  }
+  return nfs[key].format(v);
+}
+const rate = () => (S.cur === 'USD' ? CONFIG.copPerUsd : 1);
+const money = (cop, compact) => { const v = cop / rate(); return (v < -0.5 ? '−' : '') + '$' + num(Math.abs(compact ? v : Math.round(v)), compact) + (compact ? '' : ' ' + S.cur); };
+function parseNum(str) { // digits only (no negatives); a final ",dd" (ES) or ".dd" (EN) is read as decimals
+  const s = String(str).replace(/[^\d.,]/g, ''); if (!/\d/.test(s)) return null;
+  const i = s.lastIndexOf(S.lang === 'es' ? ',' : '.'), dec = i >= 0 && /^\d{1,2}$/.test(s.slice(i + 1));
+  const v = parseFloat((dec ? s.slice(0, i) : s).replace(/\D/g, '') + (dec ? '.' + s.slice(i + 1) : ''));
+  return isFinite(v) ? v : null;
+}
+
+const C = colors();
+const M = [1, 2, 3, 4, 5, 6, 7, 8].map(i => cssVar('--bc-murky-' + i));
+const vNow = new Vessel(CATS.map((k, i) => ({ key: k, short: 's_' + k, long: k + '_l', fill: M[i], ink: '#fff', hl: k === 'tr' })), 1, 'now_name');
+const vWithout = new Vessel([
+  { key: 'ops', short: 's_ops', long: 'ops_l', fill: M[0], ink: '#fff' },
+  { key: 'tr', short: 's_trBar', long: 'tr_l', fill: M[6], ink: '#fff' },
+], 1, 'without');
+const vWith = new Vessel([
+  { key: 'cost', short: 's_cost', long: 'cost_l', fill: C.sky, ink: C.ink },
+  { key: 'trSaved', short: 's_trSaved', long: 'trSaved_l', clear: true, fill: C.teal },
+  { key: 'saved', short: 'saved', long: 'otherSaved_l', clear: true },
+], -1, 'with');
+const opt = { colors: C, tr, fmt: (v, compact) => money(v, compact), years: CONFIG.years, wake: () => loop.wake() };
+const now = new Bars($('[data-chart="now"]'), [vNow], Object.assign({ side: true }, opt));
+const bars = new Bars($('[data-chart="bars"]'), [vWithout, vWith], Object.assign({ inside: true }, opt));
+const line = new Line($('[data-chart="line"]'), opt);
+const out = {}; $$('[data-out]').forEach(el => { out[el.dataset.out] = el; });
+let R = compute(S), played = false, liveTimer = 0;
+const loop = makeLoop([now, bars, line], () => {
+  const sv = vWith.segs[1].c.shown() + vWith.segs[2].c.shown();
+  const h = R.empty ? '—' : money(sv), s = R.empty ? '' : tr('inYears')(CONFIG.years, money(sv * CONFIG.years));
+  if (out.hero.textContent !== h) out.hero.textContent = h;
+  if (out.heroSub.textContent !== s) out.heroSub.textContent = s;
+});
+
+function update() {
+  R = compute(S);
+  const r = R, z = r.empty ? 0 : 1, sav = Math.max(0, r.savings) * z, trPart = Math.min(sav, Math.max(0, r.trSav));
+  r.cats.forEach((c, i) => vNow.segs[i].c.set(c.now * z));
+  const trNow = r.cats[CATS.indexOf('tr')].now;
+  vWithout.segs[0].c.set((r.without - trNow) * z); vWithout.segs[1].c.set(trNow * z);
+  vWith.segs[0].c.set(r.with * z); vWith.segs[1].c.set(trPart); vWith.segs[2].c.set(sav - trPart);
+  now.setScale(r.without * z * 1.04);
+  bars.setScale(Math.max(r.without, r.with) * z * 1.06);
+  line.set(r.without * z, r.with * z);
+  renderText();
+  if (STATIC) settle(); else loop.wake();
+}
+function settle() { // reduced motion: final state, no waves, bubbles or sloshing
+  for (const v of [vNow, vWithout, vWith]) for (const g of v.segs) g.c.snap();
+  for (const ch of [line.a, line.b, line.ym, line.rev, line.cla, now.scale, bars.scale]) ch.snap();
+  loop.drawStatic();
+}
+function renderText() {
+  const r = R, N = CONFIG.years, cell = v => money(v).replace(' ' + S.cur, '').replace('$', ''); // currency is named in the note
+  const row = (label, a, b, cls = '') => `<tr role="row" class="${cls}"><td role="rowheader">${label}</td><td role="cell">${cell(a)}</td><td role="cell">${cell(b)}</td><td role="cell">${cell(a - b)}</td></tr>`;
+  let h = '';
+  if (!r.empty) {
+    h = r.cats.filter(c => c.now > 0).map(c => row(tr(c.k + '_l') + (c.est ? ' *' : ''), c.now, c.with, c.k === 'tr' ? 'is-hl' : '')).join('') +
+      row(tr('fee'), 0, r.fee) + row(tr('annualCost'), r.without, r.with, 'is-total');
+    for (let y = 1; y <= N; y++) h += row(tr('cum')(y), r.without * y, r.with * y, (y === 1 ? 'is-sep ' : '') + (y === N ? 'is-total' : ''));
+  }
+  out.table.innerHTML = h;
+  out.tableNote.textContent = tr('tableNote')(S.cur, num(Math.round(r.kgBod)), num(Math.round(r.kgTss)));
+  out.note.textContent = r.empty ? tr('empty') : r.savings <= 0 ? tr('noSaving') : '';
+  out.chip.textContent = !r.empty && r.trSav > 0 ? tr('trChip')(money(r.trSav)) : '';
+  now.cv.setAttribute('aria-label', tr('ariaNow')(money(r.without)));
+  bars.cv.setAttribute('aria-label', tr('ariaBars')(money(r.without), money(r.with)));
+  line.cv.setAttribute('aria-label', tr('ariaLine')(N, money(r.without * N), money(r.with * N)));
+  clearTimeout(liveTimer); // announce once the user stops changing inputs
+  liveTimer = setTimeout(() => { const sv = r.empty ? 0 : Math.max(0, r.savings); out.live.textContent = r.empty ? tr('empty') : tr('live')(money(sv), N, money(sv * N)); }, 700);
+  // inputs: values in the chosen currency/locale, estimates as placeholders
+  const sec = CONFIG.sectors[S.sector];
+  $$('[data-money]').forEach(inp => {
+    const k = inp.dataset.money, est = k === 'trPaid' ? r.trEst : (CONFIG.opexCopPerM3[k] * r.m3) / 12;
+    inp.placeholder = est > 0 ? '≈ ' + num(Math.round(est / rate())) : '0';
+    if (document.activeElement !== inp) inp.value = S[k] == null ? '' : num(Math.round(S[k] / rate()));
+  });
+  $$('[data-num]').forEach(inp => {
+    const k = inp.dataset.num, load = k === 'bod' || k === 'tss';
+    if (load) { inp.disabled = S.unknown; inp.placeholder = num(k === 'bod' ? sec.bodMgL : sec.tssMgL); }
+    if (k === 'days') inp.placeholder = num(CONFIG.defaults.daysPerYear);
+    if (document.activeElement !== inp) inp.value = S[k] == null || (load && S.unknown) ? '' : num(S[k], false, true);
+  });
+  $$('[data-cur]').forEach(el => { el.textContent = S.cur; });
+}
+function applyLang() {
+  root.lang = S.lang;
+  $$('[data-i18n]').forEach(el => { el.textContent = tr(el.dataset.i18n); });
+  $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', tr(el.dataset.i18nAria)));
+  $$('.bc-tip').forEach(b => b.setAttribute('aria-label', tr('tipAria')));
+  const t = CONFIG.ctaText[S.lang];
+  out.cta.href = CONFIG.ctaUrl + (t && /wa\.me/.test(CONFIG.ctaUrl) ? (CONFIG.ctaUrl.includes('?') ? '&' : '?') + 'text=' + encodeURIComponent(t) : '');
+}
+function ripple() { for (const v of [vNow, vWithout, vWith]) v.kick(0.5, v.w / 2); line.Ek = Math.max(line.Ek, 0.5); }
+function play(replay) {
+  if (STATIC) { root.classList.add('is-landed'); return settle(); }
+  const d = replay ? 0.5 : 0, t0 = 0.2 + rnd(0, 0.04), t1 = t0 + 1.15; // bars start when the breakdown is ~75 % full
+  vNow.play(t0, rnd(1.45, 1.65), d, 0);
+  vWithout.play(t1 + rnd(0, 0.04), rnd(1.45, 1.7), d, 0);
+  vWith.play(t1 + rnd(0.08, 0.16), rnd(1.45, 1.7), d, 1.05);
+  line.play(t1 + 1.3, d);
+  setTimeout(() => root.classList.add('is-landed'), (d + t1 + 2.1) * 1000);
+  loop.wake();
+}
+
+// inputs
+const sector = $('#bci-sector'), unknown = $('#bci-unknown');
+sector.value = S.sector; unknown.checked = S.unknown;
+sector.addEventListener('change', () => { S.sector = sector.value; update(); });
+unknown.addEventListener('change', () => { S.unknown = unknown.checked; update(); });
+$$('[data-num]').forEach(inp => {
+  const k = inp.dataset.num, max = CONFIG.limits[inp.dataset.max], hint = $(`[data-hint="${k}"]`);
+  inp.addEventListener('input', () => {
+    let v = parseNum(inp.value);
+    hint.textContent = v != null && v > max ? tr('max')(num(max)) : '';
+    if (v != null) v = Math.min(v, max);
+    if (v != null && (k === 'days' || k === 'fines')) v = Math.round(v);
+    if (k === 'days' && v === 0) v = null; // zero days is not a real input: fall back to the default
+    S[k] = v; update();
+  });
+  inp.addEventListener('blur', () => renderText());
+});
+$$('[data-money]').forEach(inp => {
+  const k = inp.dataset.money, hint = $(`[data-hint="${k}"]`), max = CONFIG.limits.moneyMaxCop;
+  inp.addEventListener('input', () => {
+    const v = parseNum(inp.value);
+    hint.textContent = v != null && v * rate() > max ? tr('max')(money(max)) : '';
+    S[k] = v == null ? null : Math.min(v * rate(), max);
+    update();
+  });
+  inp.addEventListener('blur', () => renderText());
+});
+for (const name of ['lang', 'cur']) {
+  $$(`[name="bci-${name}"]`).forEach(el => {
+    el.checked = el.value === S[name];
+    el.addEventListener('change', () => { S[name] = el.value; $$('[data-hint]').forEach(h => { h.textContent = ''; }); applyLang(); renderText(); ripple(); if (STATIC) settle(); else loop.wake(); });
+  });
+}
+root.querySelector('form').addEventListener('submit', e => e.preventDefault());
+$('[data-act="replay"]').addEventListener('click', () => { if (played) play(true); });
+
+// field tooltips (hover, focus or tap)
+const tipbox = $('#bci-tipbox');
+let tipOwner = null;
+const tipShow = b => {
+  tipOwner = b; tipbox.textContent = tr(b.dataset.tip); b.setAttribute('aria-describedby', tipbox.id);
+  const r = b.getBoundingClientRect(), w = tipbox.offsetWidth;
+  tipbox.style.left = clamp(r.left + r.width / 2 - w / 2, 16, window.innerWidth - w - 16) + 'px';
+  tipbox.style.top = r.bottom + 8 + 'px'; tipbox.classList.add('is-on');
+};
+const tipHide = () => { if (tipOwner) tipOwner.removeAttribute('aria-describedby'); tipOwner = null; tipbox.classList.remove('is-on'); };
+$$('.bc-tip').forEach(b => {
+  b.addEventListener('mouseenter', () => tipShow(b)); b.addEventListener('mouseleave', tipHide);
+  b.addEventListener('focus', () => tipShow(b)); b.addEventListener('blur', tipHide);
+  b.addEventListener('click', () => (tipOwner === b && tipbox.classList.contains('is-on') ? tipHide() : tipShow(b)));
+});
+root.addEventListener('keydown', e => { if (e.key === 'Escape') tipHide(); });
+window.addEventListener('scroll', tipHide, { passive: true });
+
+root.classList.add('bc-js');
+if (STATIC) root.classList.add('bc-static');
+applyLang();
+update();
+const start = () => { if (!played) { played = true; play(false); } };
+if (window.IntersectionObserver) {
+  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { threshold: 0.15 });
+  io.observe($('.bc-results'));
+} else start();
+if (window.ResizeObserver) new ResizeObserver(() => { if (STATIC) loop.drawStatic(); else loop.wake(); }).observe(root);
+else window.addEventListener('resize', () => (STATIC ? loop.drawStatic() : loop.wake()));
+})();
+</script>
+</div>
+<!-- ===================== BIOOMA · Calculadora INDUSTRIAL — copiar hasta aquí ===================== -->
+</body>
+</html>
